@@ -62,7 +62,7 @@ __unused static const char rcsid[] = "$Sudo: closefrom.c,v 1.11 2006/08/17 15:26
 void
 closefrom(int lowfd)
 {
-    (void) fcntl(lowfd, F_CLOSEM, 0);
+    // (void) fcntl(lowfd, F_CLOSEM, 0);
 }
 #else
 void
@@ -82,7 +82,7 @@ closefrom(int lowfd)
 	    fd = strtol(dent->d_name, &endp, 10);
 	    if (dent->d_name != endp && *endp == '\0' &&
 		fd >= 0 && fd < INT_MAX && fd >= lowfd && fd != dirfd(dirp))
-		(void) close((int) fd);
+		;//(void) close((int) fd);
 	}
 	(void) closedir(dirp);
     } else
@@ -102,7 +102,7 @@ closefrom(int lowfd)
 	    maxfd = OPEN_MAX;
 
 	for (fd = lowfd; fd < maxfd; fd++)
-	    (void) close((int) fd);
+	    ;//(void) close((int) fd);
     }
 }
 #endif /* !HAVE_FCNTL_CLOSEM */
