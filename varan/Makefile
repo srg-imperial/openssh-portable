@@ -12,7 +12,7 @@ CLANG  = $(shell which clang)
 SSH_CFG_FLAGS=--without-pie --without-hardening
 
 # For debugging
-SSH_CFG_FLAGS=--disable-strip
+SSH_CFG_FLAGS+=--disable-strip
 CFLAGS = -O0 -g
 
 # Where each version expects to be installed
@@ -77,8 +77,9 @@ $(SSH_GCC):
 	make -C .. clean || true
 	cd .. ; autoconf || true
 	cd .. ; autoheader || true
-	cd .. ; CC=$(GCC)             \
+	cd .. ; CC=$(GCC)               \
   	CFLAGS="$(CFLAGS)"            \
+  	LDFLAGS="-ldl"                \
   	./configure                   \
   	$(SSH_CFG_FLAGS)              \
   	--prefix=$(INSTALL_BUILD_DIR) \
@@ -95,7 +96,7 @@ $(SSH_GCC_ASAN):
 	make -C .. clean || true
 	cd .. ; autoconf || true
 	cd .. ; autoheader || true
-	cd .. ; CC=$(GCC)                     \
+	cd .. ; CC=$(GCC)                       \
   	CFLAGS="$(CFLAGS) -fsanitize=address" \
   	LDFLAGS="-fsanitize=address -ldl"     \
   	./configure                           \
