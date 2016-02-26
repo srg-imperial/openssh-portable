@@ -1653,7 +1653,7 @@ child_close_fds(void)
 	 * initgroups, because at least on Solaris 2.3 it leaves file
 	 * descriptors open.
 	 */
-	closefrom(STDERR_FILENO + 1);
+	// closefrom(STDERR_FILENO + 1);
 }
 
 /*
