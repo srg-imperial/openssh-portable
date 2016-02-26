@@ -405,7 +405,8 @@ cat << EOF > $OBJ/sshd_config
 	#ListenAddress		::1
 	PidFile			$PIDFILE
 	AuthorizedKeysFile	$OBJ/authorized_keys_%u
-	LogLevel		DEBUG3
+	#LogLevel		DEBUG3
+	LogLevel		ERROR
 	AcceptEnv		_XXX_TEST_*
 	AcceptEnv		_XXX_TEST
 	Subsystem	sftp	$SFTPSERVER
@@ -440,7 +441,8 @@ Host *
 	RhostsRSAAuthentication	no
 	BatchMode		yes
 	StrictHostKeyChecking	yes
-	LogLevel		DEBUG3
+	#LogLevel		DEBUG3
+	LogLevel		ERROR
 EOF
 
 if [ ! -z "$TEST_SSH_SSH_CONFOPTS" ]; then
@@ -529,7 +531,7 @@ fi
 # create a proxy version of the client config
 (
 	cat $OBJ/ssh_config
-	echo proxycommand ${SUDO} sh ${SRC}/sshd-log-wrapper.sh ${TEST_SSHD_LOGFILE} ${SSHD} -i -f $OBJ/sshd_proxy
+	echo proxycommand ${SUDO} sh ${SRC}/sshd-log-wrapper.sh ${TEST_SSHD_LOGFILE} ${SSHD} -i -f $OBJ/sshd_proxy -D \&
 ) > $OBJ/ssh_proxy
 
 # check proxy config
@@ -539,7 +541,7 @@ start_sshd ()
 {
 	# start sshd
 	$SUDO ${SSHD} -f $OBJ/sshd_config "$@" -t || fatal "sshd_config broken"
-	$SUDO ${SSHD} -f $OBJ/sshd_config "$@" -E$TEST_SSHD_LOGFILE
+	$SUDO ${SSHD} -f $OBJ/sshd_config "$@" -E$TEST_SSHD_LOGFILE -D &
 
 	trace "wait for sshd"
 	i=0;
@@ -561,4 +563,5 @@ if [ $RESULT -eq 0 ]; then
 else
 	echo failed $tid
 fi
+save_debug_log "OK"
 exit $RESULT
