@@ -2,7 +2,7 @@ SH     = $(shell which sh)
 PWD    = $(shell pwd)
 
 # Varan
-VX     = $(shell which vx)
+VX     = /home/varan/varan/bin/src/vx
 
 # Compilers
 GCC    = $(shell which gcc)
@@ -77,11 +77,12 @@ $(SSH_GCC):
 	make -C .. clean || true
 	cd .. ; autoconf || true
 	cd .. ; autoheader || true
-	cd .. ; CC=$(GCC)  \
-  	CFLAGS="$(CFLAGS)" \
-  	./configure        \
-  	$(SSH_CFG_FLAGS)   \
-  	--prefix=$(INSTALL_BUILD_DIR)
+	cd .. ; CC=$(GCC)             \
+  	CFLAGS="$(CFLAGS)"            \
+  	./configure                   \
+  	$(SSH_CFG_FLAGS)              \
+  	--prefix=$(INSTALL_BUILD_DIR) \
+	--with-privsep-path=$(INSTALL_BUILD_DIR)/var/empty
 	make -C ..
 	make -C .. install
 	echo "" > $(SSH_CONFIG)
@@ -99,7 +100,8 @@ $(SSH_GCC_ASAN):
   	LDFLAGS="-fsanitize=address -ldl"     \
   	./configure                           \
   	$(SSH_CFG_FLAGS)                      \
-  	--prefix=$(INSTALL_BUILD_DIR)
+  	--prefix=$(INSTALL_BUILD_DIR)         \
+	--with-privsep-path=$(INSTALL_BUILD_DIR)/var/empty
 	make -C ..
 	make -C .. install
 	echo "" > $(SSH_CONFIG)
@@ -136,11 +138,12 @@ $(SSH_CLANG):
 	make -C .. clean || true
 	cd .. ; autoconf || true
 	cd .. ; autoheader || true
-	cd .. ; CC=$(CLANG) \
-  	CFLAGS="$(CFLAGS)"  \
-  	./configure         \
-  	$(SSH_CFG_FLAGS)    \
-  	--prefix=$(INSTALL_BUILD_DIR)
+	cd .. ; CC=$(CLANG)           \
+  	CFLAGS="$(CFLAGS)"            \
+  	./configure                   \
+  	$(SSH_CFG_FLAGS)              \
+  	--prefix=$(INSTALL_BUILD_DIR) \
+	--with-privsep-path=$(INSTALL_BUILD_DIR)/var/empty
 	make -C ..
 	make -C .. install
 	echo "" > $(SSH_CONFIG)
@@ -158,7 +161,8 @@ $(SSH_CLANG_ASAN):
   	LDFLAGS="-fsanitize=address -ldl"     \
   	./configure                           \
   	$(SSH_CFG_FLAGS)                      \
-  	--prefix=$(INSTALL_BUILD_DIR)
+  	--prefix=$(INSTALL_BUILD_DIR)         \
+	--with-privsep-path=$(INSTALL_BUILD_DIR)/var/empty
 	make -C ..
 	make -C .. install
 	echo "" > $(SSH_CONFIG)
