@@ -2,7 +2,7 @@ SH     = $(shell which sh)
 PWD    = $(shell pwd)
 
 # Varan
-VX     = /home/varan/varan/bin/src/vx
+VX     = $(shell which vx)
 
 # Compilers
 GCC    = $(shell which gcc)
