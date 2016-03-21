@@ -72,6 +72,7 @@
 #include <arpa/inet.h>
 
 #ifdef WITH_OPENSSL
+#include <openssl/rand.h>
 #include <openssl/evp.h>
 #include <openssl/err.h>
 #endif
@@ -530,7 +531,7 @@ main(int ac, char **av)
 
 	ssh_malloc_init();	/* must be called before any mallocs */
 	/* Ensure that fds 0, 1 and 2 are open or directed to /dev/null */
-	sanitise_stdfd();
+	// sanitise_stdfd();
 
 	__progname = ssh_get_progname(av[0]);
 
@@ -549,7 +550,7 @@ main(int ac, char **av)
 	 * Discard other fds that are hanging around. These can cause problem
 	 * with backgrounded ssh processes started by ControlPersist.
 	 */
-	closefrom(STDERR_FILENO + 1);
+	// closefrom(STDERR_FILENO + 1);
 
 	/*
 	 * Save the original real uid.  It will be needed later (uid-swapping
