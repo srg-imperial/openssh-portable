@@ -108,6 +108,7 @@ _rs_stir(void)
 {
 	u_char rnd[KEYSZ + IVSZ];
 
+    memset(rnd, 0, sizeof(rnd));
 #ifdef WITH_OPENSSL
 	if (RAND_bytes(rnd, sizeof(rnd)) <= 0)
 		fatal("Couldn't obtain random bytes (error %ld)",
